@@ -108,6 +108,9 @@ std::string osm2rdf::config::Config::getInfo(std::string_view prefix) const {
             << osm2rdf::config::constants::ADD_WAY_NODE_SPATIAL_METADATA_INFO;
       }
     }
+    if (addHierarchLevels) {
+      oss << "\n" << prefix << osm2rdf::config::constants::ADD_HIERARCH_INFO;
+    }
     if (simplifyWKT > 0) {
       oss << "\n" << prefix << osm2rdf::config::constants::SIMPLIFY_WKT_INFO;
       oss << "\n"
@@ -310,6 +313,10 @@ void osm2rdf::config::Config::fromArgs(int argc, char** argv) {
       osm2rdf::config::constants::SKIP_WIKI_LINKS_OPTION_SHORT,
       osm2rdf::config::constants::SKIP_WIKI_LINKS_OPTION_LONG,
       osm2rdf::config::constants::SKIP_WIKI_LINKS_OPTION_HELP);
+  auto addHierarchOp = op.add<popl::Switch>(
+      osm2rdf::config::constants::ADD_HIERARCH_INFO_OPTION_SHORT,
+      osm2rdf::config::constants::ADD_HIERARCH_INFO_OPTION_LONG,
+      osm2rdf::config::constants::ADD_HIERARCH_INFO_OPTION_HELP);
 
   auto semicolonTagKeysOp =
       op.add<popl::Value<std::string>, popl::Attribute::advanced>(
@@ -431,6 +438,7 @@ void osm2rdf::config::Config::fromArgs(int argc, char** argv) {
     adminRelationsOnly = adminRelationsOnlyOp->is_set();
     minimalAreaEnvelopeRatio = minimalAreaEnvelopeRatioOp->value();
     skipWikiLinks = skipWikiLinksOp->is_set();
+    addHierarchLevels = addHierarchOp->is_set();
     simplifyGeometries = simplifyGeometriesOp->value();
     simplifyWKT = simplifyWKTOp->value();
     wktDeviation = wktDeviationOp->value();

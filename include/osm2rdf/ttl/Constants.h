@@ -45,6 +45,7 @@ inline std::string IRI__OSM2RDF_CONTAINS_NON_AREA;
 inline std::string IRI__OSM2RDF_CONTAINS_AREA;
 inline std::string IRI__OSM2RDF_INTERSECTS_NON_AREA;
 inline std::string IRI__OSM2RDF_INTERSECTS_AREA;
+inline std::string IRI__OSM2RDF_LEVEL;
 
 inline std::string IRI__OSM_META__ENVELOPE;
 inline std::string IRI__OSM_META__POS;

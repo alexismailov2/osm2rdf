@@ -208,6 +208,9 @@ void osm2rdf::osm::GeometryHandler<W>::calculateRelations() {
   }
   prepareRTree();
   prepareDAG();
+
+  writeLevels();
+
   dumpNamedAreaRelations();
   dumpUnnamedAreaRelations();
   const auto& nodeData = dumpNodeRelations();
@@ -232,6 +235,61 @@ void osm2rdf::osm::GeometryHandler<W>::prepareRTree() {
   _spatialIndex =
       SpatialIndex(_spatialStorageArea.begin(), _spatialStorageArea.end());
   std::cerr << osm2rdf::util::currentTimeFormatted() << " ... done"
+            << std::endl;
+}
+
+// ____________________________________________________________________________
+template <typename W>
+void osm2rdf::osm::GeometryHandler<W>::writeLevels() {
+  if (!_config.addHierarchLevels) return;
+  std::cerr << osm2rdf::util::currentTimeFormatted()
+            << " Writing hierarchy levels... " << std::endl;
+
+  const auto& topNds = findTopLevelNodes(_directedAreaGraph);
+
+  for (auto id : topNds) {
+    // perform a simple BFS, write out to level (this might result in multiple
+    // levels written per objects, as we don't have a tree, but we ignore this
+    // for now
+    //
+    // Careful: this only works for acyclic graphs, as we visit nodes
+    // multiple times (to account for different levels)
+
+    std::stack<std::pair<osm2rdf::osm::Area::id_t, size_t>> s;
+    std::set<std::pair<osm2rdf::osm::Area::id_t, size_t>> seen;
+
+    s.push(std::pair<osm2rdf::osm::Area::id_t, size_t>(id, 0));
+
+    while (!s.empty()) {
+      const auto t = s.top();
+      s.pop();
+      auto prev = seen.find(t);
+      if (prev == seen.end()) {
+        // not yet seen, or seen on a different level
+
+        const auto entry = _spatialStorageArea[_spatialStorageAreaIndex[t.first]];
+        const auto& entryObjId = std::get<3>(entry);
+        const auto& entryFromWay = std::get<5>(entry);
+
+        std::string areaIRI = _writer->generateIRI(
+            entryFromWay ? osm2rdf::ttl::constants::NAMESPACE__OSM_WAY
+                        : osm2rdf::ttl::constants::NAMESPACE__OSM_RELATION,
+          entryObjId);
+
+        _writer->writeTriple(
+            areaIRI, osm2rdf::ttl::constants::IRI__OSM2RDF_LEVEL,
+            _writer->generateLiteral(std::to_string(t.second),
+              "^^" + osm2rdf::ttl::constants::IRI__XSD_INTEGER));
+
+        // add all parents
+        for (const auto& fr : _directedAreaGraph.getInEdges(t.first)) {
+          s.push(std::pair<osm2rdf::osm::Area::id_t, size_t>(fr, t.second + 1));
+        }
+      }
+    }
+  }
+
+  std::cerr << osm2rdf::util::currentTimeFormatted() << " ... done "
             << std::endl;
 }
 

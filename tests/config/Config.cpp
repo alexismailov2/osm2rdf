@@ -42,6 +42,7 @@ void assertDefaultConfig(const osm2rdf::config::Config& config) {
 
   ASSERT_FALSE(config.addAreaEnvelope);
   ASSERT_FALSE(config.addAreaEnvelopeRatio);
+  ASSERT_FALSE(config.addHierarchLevels);
   ASSERT_FALSE(config.addNodeEnvelope);
   ASSERT_FALSE(config.addRelationBorderMembers);
   ASSERT_TRUE(config.addSortMetadata);

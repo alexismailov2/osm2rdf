@@ -32,6 +32,12 @@ void osm2rdf::util::DirectedGraph<T>::addEdge(T src, T dst) {
   if (_adjacency.count(dst) == 0) {
     _adjacency[dst].size();
   }
+
+  _adjacencyIn[dst].push_back(src);
+  if (_adjacencyIn.count(src) == 0) {
+    _adjacencyIn[src].size();
+  }
+
   _numEdges++;
 }
 
@@ -165,6 +171,12 @@ std::vector<T> osm2rdf::util::DirectedGraph<T>::getVertices() const {
 template <typename T>
 std::vector<T> osm2rdf::util::DirectedGraph<T>::getEdges(T src) const {
   return _adjacency.at(src);
+}
+
+// ____________________________________________________________________________
+template <typename T>
+std::vector<T> osm2rdf::util::DirectedGraph<T>::getInEdges(T dst) const {
+  return _adjacencyIn.at(dst);
 }
 
 // ____________________________________________________________________________

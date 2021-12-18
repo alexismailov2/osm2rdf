@@ -61,6 +61,7 @@ struct Config {
   // Addition filters / data
   bool addAreaEnvelopeRatio = false;
   double minimalAreaEnvelopeRatio = -1.0;
+  bool addHierarchLevels = false;
 
   // Default settings for data
   std::unordered_set<std::string> semicolonTagKeys;

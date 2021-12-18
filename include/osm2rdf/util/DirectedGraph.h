@@ -59,10 +59,13 @@ class DirectedGraph {
   [[nodiscard]] std::vector<T> getEdges(T src) const;
   // getEdges returns the stored edges but uses "fast" storage for lookup.
   [[nodiscard]] std::vector<T> getEdgesFast(T src) const;
+  // getInEdges returns the incoming stored edges for the given vertex.
+  [[nodiscard]] std::vector<T> getInEdges(T dst) const;
 
  protected:
   void findSuccessorsHelper(T src, std::vector<T>* tmp) const;
   std::unordered_map<T, std::vector<T>> _adjacency;
+  std::unordered_map<T, std::vector<T>> _adjacencyIn;
   std::unordered_map<T, std::vector<T>> _successors;
   size_t _numEdges = 0;
   bool _preparedFast = false;

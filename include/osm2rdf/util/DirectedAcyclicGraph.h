@@ -103,6 +103,23 @@ osm2rdf::util::DirectedGraph<T> reduceMaximalConnectedDAG(
   return result;
 }
 
+// returns nodes with no incoming edges
+template <typename T>
+std::vector<T> findTopLevelNodes(
+    const osm2rdf::util::DirectedGraph<T>& sourceDAG) {
+  std::vector<T> ret;
+  const auto& vertices = sourceDAG.getVertices();
+
+  for (size_t i = 0; i < vertices.size(); i++) {
+    const auto& src = vertices[i];
+    if (sourceDAG.getEdges(src).size() == 0) {
+      ret.push_back(src);
+    }
+  }
+
+  return ret;
+}
+
 }  // namespace osm2rdf::util
 
 #endif  // OSM2RDF_UTIL_DIRECTEDACYLICGRAPH_H

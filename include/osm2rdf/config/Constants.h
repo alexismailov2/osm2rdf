@@ -267,6 +267,13 @@ const static inline std::string SKIP_WIKI_LINKS_OPTION_LONG = "skip-wiki-links";
 const static inline std::string SKIP_WIKI_LINKS_OPTION_HELP =
     "Do not add wikipedia and wikidata links";
 
+const static inline std::string ADD_HIERARCH_INFO =
+    "Writing hierarch levels from DAG.";
+const static inline std::string ADD_HIERARCH_INFO_OPTION_SHORT = "";
+const static inline std::string ADD_HIERARCH_INFO_OPTION_LONG = "write-levels";
+const static inline std::string ADD_HIERARCH_INFO_OPTION_HELP =
+    "Write hierarch levels from DAG.";
+
 const static inline std::string SEMICOLON_TAG_KEYS_INFO =
     "Tag-Keys split by semicolon: ";
 const static inline std::string SEMICOLON_TAG_KEYS_OPTION_SHORT = "";

@@ -97,6 +97,9 @@ class GeometryHandler {
   FRIEND_TEST(OSM_GeometryHandler, prepareDAGEmpty);
   FRIEND_TEST(OSM_GeometryHandler, prepareDAGSimple);
 
+  // Walk the DAG and write hierarchy levels
+  void writeLevels();
+
   // Calculate relations for each area, this dumps the generated DAG.
   void dumpNamedAreaRelations();
   FRIEND_TEST(OSM_GeometryHandler, dumpNamedAreaRelationsEmpty);
