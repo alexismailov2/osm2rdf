@@ -248,7 +248,7 @@ void osm2rdf::osm::GeometryHandler<W>::writeLevels() {
   const auto& topNds = findTopLevelNodes(_directedAreaGraph);
 
   for (auto id : topNds) {
-    // perform a simple BFS, write out to level (this might result in multiple
+    // perform a simple DFS, write out the level (this might result in multiple
     // levels written per objects, as we don't have a tree, but we ignore this
     // for now
     //
